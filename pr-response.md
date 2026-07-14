@@ -48,6 +48,12 @@ For Comments 4 and 5 (the design decisions), I deliberately did not ask it to wr
 **What I did:** Added `test_add_to_watchlist_duplicate_raises` to `tests/test_watchlist.py`, mirroring `test_add_to_collection_duplicate_raises`: adds a film to the watchlist, then asserts a second add of the same film raises `AlreadyInWatchlistError`.
 **Why I chose this case:** The Comment 2 dedup logic had only ever been checked with a manual smoke-test script, not an automated regression test — so it was the one piece of committed logic in this PR without real test coverage. Adding it here closes that gap rather than picking an arbitrary new edge case.
 
+## Commit History
+
+`git log --oneline` on `feature/watchlist`, showing the rewritten conventional-commit history (no merge commits) rebased on top of `main`'s UUID refactor:
+
+![git log --oneline output](screenshots/git-log-oneline.png)
+
 ## PR Description
 
 **What it does:** Adds a watchlist feature to CineLog, letting users save films they want to watch, separate from their collection of already-watched films. Exposes `GET /watchlist/<user_id>` (returns a user's watchlist, newest-added first) and `POST /watchlist/<user_id>/add` (adds a film, with an optional `public` flag). Service-layer functions — `add_to_watchlist`, `remove_from_watchlist`, `get_watchlist` — follow the same `verb_to_noun` naming and deduplication/error-handling conventions as the existing collection feature.
